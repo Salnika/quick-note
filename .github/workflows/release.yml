@@ -20,11 +20,12 @@ jobs:
                   bun-version: "latest"
             - run: bun install --frozen-lockfile
             - run: bun run build
-            - name: Generate changelog
-              uses: orhun/git-cliff-action@v3
+            - name: Install git-cliff
+              uses: taiki-e/install-action@v2
               with:
-                  config: cliff.toml
-                  args: --tag ${{ github.ref_name }} --output CHANGELOG.md
+                  tool: git-cliff
+            - name: Generate changelog
+              run: git cliff --config cliff.toml --tag "${{ github.ref_name }}" --output CHANGELOG.md
             - name: Build release artifact
               run: |
                   zip -j quick-note-${{ github.ref_name }}.zip dist/index.html
