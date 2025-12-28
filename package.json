@@ -1,0 +1,22 @@
+{
+  "name": "quick-note",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "bunx oxlint@latest ./src"
+  },
+  "dependencies": {
+    "lz-string": "^1.4.4",
+    "preact": "^10.19.3"
+  },
+  "devDependencies": {
+    "@preact/preset-vite": "^2.9.0",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.0",
+    "vite-plugin-singlefile": "^0.13.5"
+  }
+}
