@@ -1,0 +1,35 @@
+name: Release
+
+on:
+    push:
+        tags: ["*"]
+    workflow_dispatch:
+
+permissions:
+    contents: write
+
+jobs:
+    release:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+            - uses: oven-sh/setup-bun@v1
+              with:
+                  bun-version: "latest"
+            - run: bun install --frozen-lockfile
+            - run: bun run build
+            - name: Generate changelog
+              uses: orhun/git-cliff-action@v3
+              with:
+                  config: cliff.toml
+                  args: --tag ${{ github.ref_name }} --output CHANGELOG.md
+            - name: Build release artifact
+              run: |
+                  zip -j quick-note-${{ github.ref_name }}.zip dist/index.html
+            - name: Create release
+              uses: softprops/action-gh-release@v2
+              with:
+                  body_path: CHANGELOG.md
+                  files: quick-note-${{ github.ref_name }}.zip
